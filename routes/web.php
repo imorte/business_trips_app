@@ -18,5 +18,11 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::group(['middleware' => ['auth'], 'prefix' => 'panel'], function() {
-    Route::get('/', 'HomeController@index');
+    Route::get('/', 'HomeController@index')->name('panel');
+
+    Route::get('companies', 'HomeController@company')->name('companies');
+    Route::get('departments', 'HomeController@department')->name('departments');
+    Route::get('trips', 'HomeController@trip')->name('trips');
+    Route::get('cities', 'HomeController@city')->name('cities');
+    Route::get('employees   ', 'HomeController@employee')->name('employees');
 });
