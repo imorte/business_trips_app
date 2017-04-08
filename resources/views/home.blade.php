@@ -3,12 +3,22 @@
 @section('content')
 <div class="container">
     <div class="row">
-        <div class="col-md-8 col-md-offset-2">
+        <div class="col-md-12">
             <div class="panel panel-default">
-                <div class="panel-heading">Dashboard</div>
+                <div class="panel-heading">Административный раздел</div>
 
                 <div class="panel-body">
-                    You are logged in!
+                    <ul class="nav nav-pills">
+                        <li role="presentation"><a href="#">Организации</a></li>
+                        <li role="presentation"><a href="#">Отделы</a></li>
+                        <li role="presentation"><a href="#">Командировки</a></li>
+                        <li role="presentation"><a href="#">Города</a></li>
+                        <li role="presentation"><a href="#">Сотрудники</a></li>
+                    </ul>
+                </div>
+                <hr>
+                <div class="panel-body">
+                    asdfasd
                 </div>
             </div>
         </div>

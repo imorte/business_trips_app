@@ -17,5 +17,6 @@ Route::get('/', function () {
 
 Auth::routes();
 
-
-Route::get('/home', 'HomeController@index');
+Route::group(['middleware' => ['auth'], 'prefix' => 'panel'], function() {
+    Route::get('/', 'HomeController@index');
+});

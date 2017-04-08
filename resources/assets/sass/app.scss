@@ -8,3 +8,13 @@
 // Bootstrap
 @import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
 
+body {
+  background-color: $body-bg;
+  font-family: $font-family-sans-serif;
+}
+
+.wrapper {
+  margin: 200px auto;
+  width: 700px;
+}
+
