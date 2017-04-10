@@ -20,3 +20,30 @@ require('./bootstrap');
 
 console.log('01001000011010010111001001100101001000000110110101100101001000000011101100101001');
 
+$(function() {
+    let dataHide = $('[data-hide]');
+    let companySelect = $('#company_id');
+    let departmentSelect = $('#department_id');
+
+    dataHide.fadeOut(5000);
+
+    companySelect.on('change', function(e) {
+        let companyId = e.target.value;
+        let render = {};
+        $.ajax({
+            method: "POST",
+            url: "/api/" + companyId + "/departments",
+        }).done(function(result) {
+            $(result).each(function (k, v) {
+                render[v.id] = v.name
+            });
+            departmentSelect.empty();
+            for(let key in render) {
+                departmentSelect.append('<option value="' + key +'" >' + render[key] + '</option>');
+            }
+        }).fail(function() {
+            departmentSelect.empty();
+            departmentSelect.append('<option value="" selected="selected">Сначала выберите компанию</option>');
+        });
+    });
+});

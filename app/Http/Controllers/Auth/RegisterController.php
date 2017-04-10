@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Company;
 use App\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
@@ -21,6 +22,21 @@ class RegisterController extends Controller
     */
 
     use RegistersUsers;
+
+    /**
+     * @var int
+     */
+    private $defaultRole = 2;
+
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function showRegistrationForm()
+    {
+        $companies = Company::pluck('name', 'id')->all();
+
+        return view('auth.register', compact('companies'));
+    }
 
     /**
      * Where to redirect users after registration.
@@ -50,6 +66,8 @@ class RegisterController extends Controller
         return Validator::make($data, [
             'name' => 'required|max:255',
             'last_name' => 'required|max:255',
+            'company_id' => 'required',
+            'department_id' => 'required',
             'email' => 'required|email|max:255|unique:users',
             'password' => 'required|min:6|confirmed',
         ]);
@@ -66,6 +84,9 @@ class RegisterController extends Controller
         return User::create([
             'name' => $data['name'],
             'last_name' => $data['last_name'],
+            'role_id' => $this->defaultRole,
+            'company_id' => $data['company_id'],
+            'department_id' => $data['department_id'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
         ]);
