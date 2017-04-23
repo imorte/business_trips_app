@@ -20,12 +20,9 @@ Auth::routes();
 Route::group(['middleware' => ['auth', 'admin'], 'prefix' => 'panel'], function() {
     Route::get('/', 'HomeController@index')->name('panel');
 
-//    Route::get('companies', 'CompanyController@index')->name('companies');
     Route::resource('companies', 'CompanyController');
     Route::resource('cities', 'CityController');
     Route::resource('departments', 'DepartmentController');
     Route::resource('employees', 'EmployeeController');
-
-
-    Route::get('trips', 'HomeController@trip')->name('trips');
+    Route::resource('trips', 'TripController');
 });

@@ -91,8 +91,8 @@
                             <li role="presentation" class="{{ Request::is(getUri(route('departments.index'))) ? 'active' : '' }}">
                                 <a href="{{ route('departments.index') }}">Отделы</a>
                             </li>
-                            <li role="presentation" class="{{ Request::is(getUri(route('trips'))) ? 'active' : '' }}">
-                                <a href="{{ route('trips') }}">Командировки</a>
+                            <li role="presentation" class="{{ Request::is(getUri(route('trips.index'))) ? 'active' : '' }}">
+                                <a href="{{ route('trips.index') }}">Командировки</a>
                             </li>
                             <li role="presentation" class="{{ Request::is(getUri(route('cities.index'))) ? 'active' : '' }}">
                                 <a href="{{ route('cities.index') }}">Города</a>

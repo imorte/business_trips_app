@@ -42,7 +42,7 @@
                         <div class="form-group">
                             {!! Form::label('company_id', 'Компания: ', ['class' => 'col-md-4 control-label']) !!}
                             <div class="col-md-6">
-                                {!! Form::select('company_id', ['' => 'Выберите компанию'] + $companies, null, ['class' => 'form-control']) !!}
+                                {!! Form::select('company_id', ['' => 'Выберите компанию'] + $companies, null, ['class' => 'form-control', 'data-company-departments']) !!}
                             </div>
                         </div>
 

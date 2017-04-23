@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTripsTable extends Migration
+class AddInTripColumnToUsers extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,8 @@ class CreateTripsTable extends Migration
      */
     public function up()
     {
-        Schema::create('trips', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('name');
-            $table->tinyInteger('user_id')->unique();
-            $table->tinyInteger('company_id');
+        Schema::table('users', function (Blueprint $table) {
             $table->boolean('in_trip')->default(false);
-
-            $table->timestamps();
         });
     }
 
@@ -31,6 +25,8 @@ class CreateTripsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('trips');
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropColumn('in_trip');
+        });
     }
 }

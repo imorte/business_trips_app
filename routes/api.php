@@ -18,3 +18,4 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::post('{company}/departments', 'ApiController@getDepartment');
+Route::post('{company}/employees', 'ApiController@getEmployees');

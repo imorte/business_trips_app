@@ -16,6 +16,11 @@ class Admin
      */
     public function handle($request, Closure $next)
     {
-        return $next($request);
+        if(Auth::user()->role->id == 1) {
+            return $next($request);
+        } else {
+            return 'user!';
+        }
+
     }
 }

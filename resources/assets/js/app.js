@@ -22,28 +22,43 @@ console.log('0100100001101001011100100110010100100000011011010110010100100000001
 
 $(function() {
     let dataHide = $('[data-hide]');
-    let companySelect = $('#company_id');
+    let companySelectForDepartment = $('[data-company-departments]');
+    let companySelectForEmployee = $('[data-company-employees]');
     let departmentSelect = $('#department_id');
+    let employeesSelect = $('#user_id');
 
     dataHide.fadeOut(5000);
 
-    companySelect.on('change', function(e) {
-        let companyId = e.target.value;
-        let render = {};
-        $.ajax({
-            method: "POST",
-            url: "/api/" + companyId + "/departments",
-        }).done(function(result) {
-            $(result).each(function (k, v) {
-                render[v.id] = v.name
+    function ajaxLoadData(selector, appendTo, uri) {
+        selector.on('change', function(e) {
+            let companyId = e.target.value;
+            let render = {};
+            $.ajax({
+                method: "POST",
+                url: "/api/" + companyId + "/" + uri,
+            }).done(function(result) {
+                $(result).each(function (k, v) {
+                    if(uri === 'departments') {
+                        render[v.id] = v.name;
+                    } else {
+                        render[v.id] = v.name + ' ' + v.last_name;
+                    }
+                });
+                appendTo.empty();
+                if(!$.isEmptyObject(render)) {
+                    for(let key in render) {
+                        appendTo.append('<option value="' + key +'" >' + render[key] + '</option>');
+                    }
+                } else {
+                    appendTo.append('<option value="" >Сотрудников нет</option>');
+                }
+            }).fail(function() {
+                appendTo.empty();
+                appendTo.append('<option value="" selected="selected">Сначала выберите компанию</option>');
             });
-            departmentSelect.empty();
-            for(let key in render) {
-                departmentSelect.append('<option value="' + key +'" >' + render[key] + '</option>');
-            }
-        }).fail(function() {
-            departmentSelect.empty();
-            departmentSelect.append('<option value="" selected="selected">Сначала выберите компанию</option>');
         });
-    });
+    }
+
+    ajaxLoadData(companySelectForDepartment, departmentSelect, 'departments');
+    ajaxLoadData(companySelectForEmployee, employeesSelect, 'employees');
 });
