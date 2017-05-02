@@ -32,4 +32,12 @@ class Trip extends Model
     {
         return $this->belongsTo('App\Department');
     }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function costs()
+    {
+        return $this->hasMany('App\Cost');
+    }
 }

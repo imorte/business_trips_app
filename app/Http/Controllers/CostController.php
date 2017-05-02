@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Cost;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class CostController extends Controller
 {
@@ -10,8 +12,10 @@ class CostController extends Controller
     {
         $input = $request->all();
 
-        foreach ($input as $item) {
-            echo $item . ' ' . PHP_EOL;
+        if(Cost::create($input)) {
+            return collect(['result' => true])->toJson();
+        } else {
+            return collect(['result' => false])->toJson();
         }
     }
 }

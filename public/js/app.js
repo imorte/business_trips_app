@@ -998,6 +998,8 @@ $(function () {
 
     var $costsButton = $('[data-costs-save]');
     var $trip = $('[data-trip]').data('trip');
+    var $notifyField = $('[data-costs-notify]');
+    var $input = $('[data-costs-field]');
     var $form = $('[data-costs-form]');
 
     $form.on('submit', function (e) {
@@ -1007,7 +1009,12 @@ $(function () {
             url: '/panel/costs/store',
             data: $(this).serialize()
         }).done(function (result) {
-            console.log(result);
+            if (JSON.parse(result).result) {
+                $notifyField.text('Успешно добавлено');
+                $input.val('');
+            } else {
+                $notifyField.text('Ошибка ввода');
+            }
         });
     });
 });

@@ -6,7 +6,6 @@
 
         @if(count($trips))
             Командировки:
-
             <table class="table table-striped">
                 <thead>
                 <tr>
@@ -20,6 +19,7 @@
                 <tbody>
                 @if(count($trips))
                     @foreach($trips as $trip)
+                        {{ $tripId = $trip->id }}
                         <tr>
                             <td>{{ $trip->name }}</td>
                             <td>
@@ -31,7 +31,33 @@
                             <td>{{ \Carbon\Carbon::parse($trip->trip_end)->diffForHumans() }}</td>
                             <td>
                                 @if(Auth::user()->role->id == 1)
-                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#list">Просмотреть</button>
+                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#list{{ $loop->index }}">Просмотреть</button>
+                                    <div id="list{{ $loop->index }}" class="modal fade" role="dialog">
+                                        <div class="modal-dialog">
+                                            <!-- Modal content-->
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                    <h4 class="modal-title">Список расходов</h4>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <table class="table">
+                                                        @if(count($trip->costs))
+                                                            @foreach($trip->costs as $cost)
+                                                                <tr>
+                                                                    <td>{{ $cost->name }}</td>
+                                                                    <td>{{ $cost->price }}</td>
+                                                                </tr>
+                                                            @endforeach
+                                                        @endif
+                                                    </table>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 @else
                                     <button type="button" class="btn btn-primary" data-trip="{{ $trip->id }}" data-toggle="modal" data-target="#costs">Заполнить</button>
                                 @endif
@@ -85,27 +111,7 @@
         @endif
     </div>
 
-    @if(Auth::user()->role->id == 1)
-        <div id="list" class="modal fade" role="dialog">
-            <div class="modal-dialog">
-
-                <!-- Modal content-->
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title">Список расходов</h4>
-                    </div>
-                    <div class="modal-body">
-                        <p>Some text in the modal.</p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    @else
+    @if(Auth::user()->role->id != 1)
         <div id="costs" class="modal fade" role="dialog">
             <div class="modal-dialog">
 
@@ -118,27 +124,28 @@
                     <div class="modal-body">
                         {!! Form::open(['method' => 'POST', 'action' => 'CostController@store', 'class' => 'bordered-group', 'data-costs-form']) !!}
 
-                            <div data-costs-container>
-                                <div data-costs-item>
-                                    <div style="width: 45%; display: inline-block">
-                                        <div class="form-group">
-                                            {!! Form::label('name', 'Описание', ['class' => 'control-label']) !!}
-                                            {!! Form::text('name', null, ['class' => 'form-control']) !!}
-                                        </div>
+                        <div data-costs-container>
+                            <div data-costs-item>
+                                <p data-costs-notify></p>
+                                <div style="width: 45%; display: inline-block">
+                                    <div class="form-group">
+                                        {!! Form::label('name', 'Описание', ['class' => 'control-label']) !!}
+                                        {!! Form::text('name', null, ['class' => 'form-control', 'data-costs-field']) !!}
                                     </div>
-
-                                    <div style="width: 45%; display: inline-block">
-                                        <div class="form-group">
-                                            {!! Form::label('costs', 'Стоимость', ['class' => 'control-label']) !!}
-                                            {!! Form::text('costs', null, ['class' => 'form-control']) !!}
-                                        </div>
+                                </div>
+                                {!! Form::hidden('trip_id', $tripId) !!}
+                                <div style="width: 45%; display: inline-block">
+                                    <div class="form-group">
+                                        {!! Form::label('price', 'Стоимость', ['class' => 'control-label']) !!}
+                                        {!! Form::text('price', null, ['class' => 'form-control', 'data-costs-field']) !!}
                                     </div>
                                 </div>
                             </div>
+                        </div>
 
-                            <div class="form-group">
-                                {!! Form::submit('Подтвердить', ['class' => 'btn btn-success', 'data-costs-save']) !!}
-                            </div>
+                        <div class="form-group">
+                            {!! Form::submit('Подтвердить', ['class' => 'btn btn-success', 'data-costs-save']) !!}
+                        </div>
 
                         {!! Form::close() !!}
                     </div>

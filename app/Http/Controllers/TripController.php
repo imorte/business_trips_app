@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Company;
+use App\Cost;
 use App\Trip;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Contracts\Support\MessageProvider;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\MessageBag;
 
@@ -21,7 +23,12 @@ class TripController extends Controller
     public function index()
     {
         $companies = Company::pluck('name', 'id')->toArray();
-        $trips = Trip::all();
+        if(Auth::user()->role_id == 1) {
+            $trips = Trip::all();
+        } else {
+            $userId = Auth::user()->id;
+            $trips = Trip::where('user_id', $userId)->get();
+        }
 
         return view('trip.index', compact('companies', 'trips'));
     }
