@@ -18,9 +18,8 @@ class Admin
     {
         if(Auth::user()->role->id == 1) {
             return $next($request);
-        } else {
-            return 'user!';
         }
 
+        abort(404);
     }
 }

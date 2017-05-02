@@ -85,21 +85,24 @@
                     @include('partials._notify')
                     <div class="panel-body">
                         <ul class="nav nav-pills">
-                            <li role="presentation" class="{{ Request::is(getUri(route('companies.index'))) ? 'active' : '' }}">
-                                <a href="{{ route('companies.index') }}">Организации</a>
-                            </li>
-                            <li role="presentation" class="{{ Request::is(getUri(route('departments.index'))) ? 'active' : '' }}">
-                                <a href="{{ route('departments.index') }}">Отделы</a>
-                            </li>
+                            @if(Auth::user()->role->id == 1)
+                                <li role="presentation" class="{{ Request::is(getUri(route('companies.index'))) ? 'active' : '' }}">
+                                    <a href="{{ route('companies.index') }}">Организации</a>
+                                </li>
+                                <li role="presentation" class="{{ Request::is(getUri(route('departments.index'))) ? 'active' : '' }}">
+                                    <a href="{{ route('departments.index') }}">Отделы</a>
+                                </li>
+                                <li role="presentation" class="{{ Request::is(getUri(route('cities.index'))) ? 'active' : '' }}">
+                                    <a href="{{ route('cities.index') }}">Города</a>
+                                </li>
+                                <li role="presentation" class="{{ Request::is(getUri(route('employees.index'))) ? 'active' : '' }}">
+                                    <a href="{{ route('employees.index') }}">Сотрудники</a>
+                                </li>
+                            @endif
                             <li role="presentation" class="{{ Request::is(getUri(route('trips.index'))) ? 'active' : '' }}">
                                 <a href="{{ route('trips.index') }}">Командировки</a>
                             </li>
-                            <li role="presentation" class="{{ Request::is(getUri(route('cities.index'))) ? 'active' : '' }}">
-                                <a href="{{ route('cities.index') }}">Города</a>
-                            </li>
-                            <li role="presentation" class="{{ Request::is(getUri(route('employees.index'))) ? 'active' : '' }}">
-                                <a href="{{ route('employees.index') }}">Сотрудники</a>
-                            </li>
+
                         </ul>
                     </div>
                     <hr>

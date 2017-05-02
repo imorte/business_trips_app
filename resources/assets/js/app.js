@@ -18,7 +18,11 @@ require('./bootstrap');
 //     el: '#app'
 // });
 
-console.log('01001000011010010111001001100101001000000110110101100101001000000011101100101001');
+$.ajaxSetup({
+    headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
+});
 
 $(function() {
     let dataHide = $('[data-hide]');
@@ -27,7 +31,7 @@ $(function() {
     let departmentSelect = $('#department_id');
     let employeesSelect = $('#user_id');
 
-    dataHide.fadeOut(5000);
+    dataHide.fadeOut(3000);
 
     function ajaxLoadData(selector, appendTo, uri) {
         selector.on('change', function(e) {
@@ -61,4 +65,20 @@ $(function() {
 
     ajaxLoadData(companySelectForDepartment, departmentSelect, 'departments');
     ajaxLoadData(companySelectForEmployee, employeesSelect, 'employees');
+
+
+    let $costsButton = $('[data-costs-save]');
+    let $trip = $('[data-trip]').data('trip');
+    let $form = $('[data-costs-form]');
+
+    $form.on('submit', function(e) {
+        e.preventDefault();
+        $.ajax({
+            method: 'POST',
+            url: '/panel/costs/store',
+            data: $(this).serialize()
+        }).done(function(result) {
+            console.log(result);
+        });
+    })
 });

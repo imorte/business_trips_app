@@ -948,7 +948,11 @@ __webpack_require__(28);
 //     el: '#app'
 // });
 
-console.log('01001000011010010111001001100101001000000110110101100101001000000011101100101001');
+$.ajaxSetup({
+    headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
+});
 
 $(function () {
     var dataHide = $('[data-hide]');
@@ -957,7 +961,7 @@ $(function () {
     var departmentSelect = $('#department_id');
     var employeesSelect = $('#user_id');
 
-    dataHide.fadeOut(5000);
+    dataHide.fadeOut(3000);
 
     function ajaxLoadData(selector, appendTo, uri) {
         selector.on('change', function (e) {
@@ -991,6 +995,21 @@ $(function () {
 
     ajaxLoadData(companySelectForDepartment, departmentSelect, 'departments');
     ajaxLoadData(companySelectForEmployee, employeesSelect, 'employees');
+
+    var $costsButton = $('[data-costs-save]');
+    var $trip = $('[data-trip]').data('trip');
+    var $form = $('[data-costs-form]');
+
+    $form.on('submit', function (e) {
+        e.preventDefault();
+        $.ajax({
+            method: 'POST',
+            url: '/panel/costs/store',
+            data: $(this).serialize()
+        }).done(function (result) {
+            console.log(result);
+        });
+    });
 });
 
 /***/ }),

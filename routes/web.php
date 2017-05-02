@@ -17,12 +17,16 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::group(['middleware' => ['auth', 'admin'], 'prefix' => 'panel'], function() {
+Route::group(['middleware' => ['auth'], 'prefix' => 'panel'], function() {
     Route::get('/', 'HomeController@index')->name('panel');
 
-    Route::resource('companies', 'CompanyController');
-    Route::resource('cities', 'CityController');
-    Route::resource('departments', 'DepartmentController');
-    Route::resource('employees', 'EmployeeController');
+    Route::group(['middleware' => 'admin'], function() {
+        Route::resource('companies', 'CompanyController');
+        Route::resource('cities', 'CityController');
+        Route::resource('departments', 'DepartmentController');
+        Route::resource('employees', 'EmployeeController');
+    });
+
     Route::resource('trips', 'TripController');
+    Route::post('costs/store', 'CostController@store');
 });
